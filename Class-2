@@ -1,0 +1,744 @@
+ubuntu@ip-172-31-12-183:~$ docker pull ngins:latest
+permission denied while trying to connect to the docker API at unix:///var/run/doc
+ubuntu@ip-172-31-12-183:~$ sudo docker pull ngins:latest
+Error response from daemon: pull access denied for ngins, repository does not exis
+ubuntu@ip-172-31-12-183:~$ sudo docker pull nginx:latest
+latest: Pulling from library/nginx
+e2f8e296d9df: Pull complete
+d7ecded7702a: Pull complete
+266626526d42: Pull complete
+320b0949be89: Pull complete
+d921c57c6a81: Pull complete
+9def903993e4: Pull complete
+52bc359bcbd7: Pull complete
+Digest: sha256:1beed3ca46acebe9d3fb62e9067f03d05d5bfa97a00f30938a0a3580563272ad
+Status: Downloaded newer image for nginx:latest
+docker.io/library/nginx:latest
+ubuntu@ip-172-31-12-183:~$ sudo docker run --name mynginx -dt 8080:80
+Unable to find image '8080:80' locally
+docker: Error response from daemon: pull access denied for 8080, repository does ngin'
+
+Run 'docker run --help' for more information
+ubuntu@ip-172-31-12-183:~$ sudo docker run --name mynginx -dt -p 8080:80 nginx
+94407ff6259c321934f2f1cb1d553a3291cb8f0652107a023dc317593bb6b011
+ubuntu@ip-172-31-12-183:~$ docker pd
+docker: unknown command: docker pd
+
+Run 'docker --help' for more information
+ubuntu@ip-172-31-12-183:~$ docker ps
+permission denied while trying to connect to the docker API at unix:///var/run/doc
+ubuntu@ip-172-31-12-183:~$ sudo docker ps
+CONTAINER ID   IMAGE     COMMAND                  CREATED          STATUS                  NAMES
+94407ff6259c   nginx     "/docker-entrypoint.…"   12 seconds ago   Up 12 seconds  80/tcp   mynginx
+ubuntu@ip-172-31-12-183:~$ sudo usermod -aG docker $USER
+ubuntu@ip-172-31-12-183:~$
+ubuntu@ip-172-31-12-183:~$
+ubuntu@ip-172-31-12-183:~$
+ubuntu@ip-172-31-12-183:~$ docker ps
+permission denied while trying to connect to the docker API at unix:///var/run/doc
+ubuntu@ip-172-31-12-183:~$
+ubuntu@ip-172-31-12-183:~$
+ubuntu@ip-172-31-12-183:~$ newgrp docker
+ubuntu@ip-172-31-12-183:~$
+ubuntu@ip-172-31-12-183:~$
+ubuntu@ip-172-31-12-183:~$
+ubuntu@ip-172-31-12-183:~$ docker ps
+CONTAINER ID   IMAGE     COMMAND                  CREATED         STATUS         P       NAMES
+94407ff6259c   nginx     "/docker-entrypoint.…"   2 minutes ago   Up 2 minutes   0/tcp   mynginx
+ubuntu@ip-172-31-12-183:~$ docker stop mynginx
+mynginx
+ubuntu@ip-172-31-12-183:~$ docker run --n mydocker -dt -p 8080:80 nginx
+unknown flag: --n
+
+Usage:  docker run [OPTIONS] IMAGE [COMMAND] [ARG...]
+
+Run 'docker run --help' for more information
+ubuntu@ip-172-31-12-183:~$ docker run -n mydocker -dt -p 8080:80 nginx
+unknown shorthand flag: 'n' in -n
+
+Usage:  docker run [OPTIONS] IMAGE [COMMAND] [ARG...]
+
+Run 'docker run --help' for more information
+ubuntu@ip-172-31-12-183:~$ docker run --name mydocker -dt -p 8080:80 nginx
+b7a036c15aff31543004ead7b624c762965bf224d49563f815d594ab9b9a06ad
+ubuntu@ip-172-31-12-183:~$ docker ps -a
+CONTAINER ID   IMAGE         COMMAND                  CREATED          STATUS                                  NAMES
+b7a036c15aff   nginx         "/docker-entrypoint.…"   13 seconds ago   Up 13 secon>80/tcp, [::]:8080->80/tcp   mydocker
+94407ff6259c   nginx         "/docker-entrypoint.…"   5 minutes ago    Exited (0)                              mynginx
+42cdab229d46   hello-world   "/hello"                 12 minutes ago   Exited (0)                              ecstatic_blackwell
+1ae19b9964e9   hello-world   "/hello"                 12 minutes ago   Exited (0)                              kind_ishizaka
+ubuntu@ip-172-31-12-183:~$
+ubuntu@ip-172-31-12-183:~$
+ubuntu@ip-172-31-12-183:~$ docker start 94407ff6259c
+Error response from daemon: failed to set up container networking: driver failed pn endpoint mynginx (8634ad61fab373d8fe57070eb18aa482075c9c1a0ccdac72024dd3bd7c7d40 port is already allocated
+failed to start containers: 94407ff6259c
+ubuntu@ip-172-31-12-183:~$ docker ps -a
+CONTAINER ID   IMAGE         COMMAND                  CREATED              STATUS
+b7a036c15aff   nginx         "/docker-entrypoint.…"   About a minute ago   Up Abou
+94407ff6259c   nginx         "/docker-entrypoint.…"   6 minutes ago        Exited
+42cdab229d46   hello-world   "/hello"                 13 minutes ago       Exited ackwell
+1ae19b9964e9   hello-world   "/hello"                 13 minutes ago       Exited ka
+ubuntu@ip-172-31-12-183:~$ docker start mynginx
+mynginx
+ubuntu@ip-172-31-12-183:~$
+ubuntu@ip-172-31-12-183:~$
+ubuntu@ip-172-31-12-183:~$ docker ps
+CONTAINER ID   IMAGE     COMMAND                  CREATED              STATUS
+b7a036c15aff   nginx     "/docker-entrypoint.…"   About a minute ago   Up About a
+94407ff6259c   nginx     "/docker-entrypoint.…"   6 minutes ago        Up 10 secon
+ubuntu@ip-172-31-12-183:~$ docker container stop $(docker container ls -aq)
+b7a036c15aff
+94407ff6259c
+42cdab229d46
+1ae19b9964e9
+ubuntu@ip-172-31-12-183:~$ docker container start $(docker container ls -aq)
+b7a036c15aff
+94407ff6259c
+42cdab229d46
+1ae19b9964e9
+ubuntu@ip-172-31-12-183:~$ docker ps
+CONTAINER ID   IMAGE     COMMAND                  CREATED         STATUS         P       NAMES
+b7a036c15aff   nginx     "/docker-entrypoint.…"   3 minutes ago   Up 8 seconds   0/tcp   mydocker
+94407ff6259c   nginx     "/docker-entrypoint.…"   8 minutes ago   Up 8 seconds           mynginx
+ubuntu@ip-172-31-12-183:~$
+ubuntu@ip-172-31-12-183:~$
+ubuntu@ip-172-31-12-183:~$
+ubuntu@ip-172-31-12-183:~$ docker container run --name test-docker nginx
+/docker-entrypoint.sh: /docker-entrypoint.d/ is not empty, will attempt to perform
+/docker-entrypoint.sh: Looking for shell scripts in /docker-entrypoint.d/
+/docker-entrypoint.sh: Launching /docker-entrypoint.d/10-listen-on-ipv6-by-default
+10-listen-on-ipv6-by-default.sh: info: Getting the checksum of /etc/nginx/conf.d/d
+10-listen-on-ipv6-by-default.sh: info: Enabled listen on IPv6 in /etc/nginx/conf.d
+/docker-entrypoint.sh: Sourcing /docker-entrypoint.d/15-local-resolvers.envsh
+/docker-entrypoint.sh: Launching /docker-entrypoint.d/20-envsubst-on-templates.sh
+/docker-entrypoint.sh: Launching /docker-entrypoint.d/30-tune-worker-processes.sh
+/docker-entrypoint.sh: Configuration complete; ready for start up
+2025/11/15 00:03:36 [notice] 1#1: using the "epoll" event method
+2025/11/15 00:03:36 [notice] 1#1: nginx/1.29.3
+2025/11/15 00:03:36 [notice] 1#1: built by gcc 14.2.0 (Debian 14.2.0-19)
+2025/11/15 00:03:36 [notice] 1#1: OS: Linux 6.14.0-1015-aws
+2025/11/15 00:03:36 [notice] 1#1: getrlimit(RLIMIT_NOFILE): 1024:524288
+2025/11/15 00:03:36 [notice] 1#1: start worker processes
+2025/11/15 00:03:36 [notice] 1#1: start worker process 29
+^C2025/11/15 00:03:39 [notice] 1#1: signal 2 (SIGINT) received, exiting
+2025/11/15 00:03:39 [notice] 29#29: exiting
+2025/11/15 00:03:39 [notice] 29#29: exit
+2025/11/15 00:03:39 [notice] 1#1: signal 17 (SIGCHLD) received from 29
+2025/11/15 00:03:39 [notice] 1#1: worker process 29 exited with code 0
+2025/11/15 00:03:39 [notice] 1#1: exit
+ubuntu@ip-172-31-12-183:~$ docker container run --name test-docker -dt nginx
+docker: Error response from daemon: Conflict. The container name "/test-docker" isa35b0a7aea1e5bc154e869787ac545ee083f3ba36f0622118f4330705452". You have to remove ble to reuse that name.
+
+Run 'docker run --help' for more information
+ubuntu@ip-172-31-12-183:~$ docker container run --name test-docker2 -dt nginx
+9404c3c733261b9ee231ac406b4b925824998ae9b468b4c7541ea3dc4bbf4715
+ubuntu@ip-172-31-12-183:~$
+ubuntu@ip-172-31-12-183:~$
+ubuntu@ip-172-31-12-183:~$ docker ps
+CONTAINER ID   IMAGE     COMMAND                  CREATED          STATUS                 NAMES
+9404c3c73326   nginx     "/docker-entrypoint.…"   4 seconds ago    Up 3 seconds           test-docker2
+b7a036c15aff   nginx     "/docker-entrypoint.…"   8 minutes ago    Up 5 minutes   0/tcp   mydocker
+94407ff6259c   nginx     "/docker-entrypoint.…"   13 minutes ago   Up 5 minutes           mynginx
+ubuntu@ip-172-31-12-183:~$ docker exce -it 9404c3c73326 bash
+unknown shorthand flag: 'i' in -it
+
+Usage:  docker [OPTIONS] COMMAND [ARG...]
+
+Run 'docker --help' for more information
+ubuntu@ip-172-31-12-183:~$
+ubuntu@ip-172-31-12-183:~$ docker exce -it test-docker2
+unknown shorthand flag: 'i' in -it
+
+Usage:  docker [OPTIONS] COMMAND [ARG...]
+
+Run 'docker --help' for more information
+ubuntu@ip-172-31-12-183:~$
+ubuntu@ip-172-31-12-183:~$ docker exce -it test-docker2 bash
+unknown shorthand flag: 'i' in -it
+
+Usage:  docker [OPTIONS] COMMAND [ARG...]
+
+Run 'docker --help' for more information
+ubuntu@ip-172-31-12-183:~$ docker exec -it test-docker2 bash
+root@9404c3c73326:/#
+root@9404c3c73326:/#
+root@9404c3c73326:/# lls
+bash: lls: command not found
+root@9404c3c73326:/# ll
+bash: ll: command not found
+root@9404c3c73326:/# cat /etc/os-release
+PRETTY_NAME="Debian GNU/Linux 13 (trixie)"
+NAME="Debian GNU/Linux"
+VERSION_ID="13"
+VERSION="13 (trixie)"
+VERSION_CODENAME=trixie
+DEBIAN_VERSION_FULL=13.1
+ID=debian
+HOME_URL="https://www.debian.org/"
+SUPPORT_URL="https://www.debian.org/support"
+BUG_REPORT_URL="https://bugs.debian.org/"
+root@9404c3c73326:/#
+root@9404c3c73326:/#
+root@9404c3c73326:/#
+root@9404c3c73326:/# apt-get update -y
+Get:1 http://deb.debian.org/debian trixie InRelease [140 kB]
+Get:2 http://deb.debian.org/debian trixie-updates InRelease [47.3 kB]
+Get:3 http://deb.debian.org/debian-security trixie-security InRelease [43.4 kB]
+Get:4 http://deb.debian.org/debian trixie/main amd64 Packages [9669 kB]
+Get:5 http://deb.debian.org/debian trixie-updates/main amd64 Packages [5412 B]
+Get:6 http://deb.debian.org/debian-security trixie-security/main amd64 Packages [7
+Fetched 9977 kB in 1s (8010 kB/s)
+Reading package lists... Done
+root@9404c3c73326:/#
+root@9404c3c73326:/#
+root@9404c3c73326:/#
+root@9404c3c73326:/# exit
+exit
+ubuntu@ip-172-31-12-183:~$ docker exec -it test-docker2 netstat -lntp
+OCI runtime exec failed: exec failed: unable to start container process: exec: "nein $PATH
+ubuntu@ip-172-31-12-183:~$ docker exec -it test-docker2 bash
+root@9404c3c73326:/# apt-get neet-tools
+E: Invalid operation neet-tools
+root@9404c3c73326:/# apt-get net-tools
+E: Invalid operation net-tools
+root@9404c3c73326:/# /etc/init.d/nginx
+Usage: /etc/init.d/nginx {start|stop|status|restart|reload|force-reload|upgrade|co
+root@9404c3c73326:/# /etc/init.d/nginx start
+root@9404c3c73326:/# /etc/init.d/nginx status
+nginx is running.
+root@9404c3c73326:/# apt-get install net-tools
+Reading package lists... Done
+Building dependency tree... Done
+Reading state information... Done
+The following NEW packages will be installed:
+  net-tools
+0 upgraded, 1 newly installed, 0 to remove and 0 not upgraded.
+Need to get 245 kB of archives.
+After this operation, 1012 kB of additional disk space will be used.
+Get:1 http://deb.debian.org/debian trixie/main amd64 net-tools amd64 2.10-1.3 [245
+Fetched 245 kB in 0s (10.8 MB/s)
+debconf: unable to initialize frontend: Dialog
+debconf: (No usable dialog-like program is installed, so the dialog based frontendl5/Debconf/FrontEnd/Dialog.pm line 79, <STDIN> line 1.)
+debconf: falling back to frontend: Readline
+debconf: unable to initialize frontend: Readline
+debconf: (Can't locate Term/ReadLine.pm in @INC (you may need to install the Term:ecked: /etc/perl /usr/local/lib/x86_64-linux-gnu/perl/5.40.1 /usr/local/share/perlperl5/5.40 /usr/share/perl5 /usr/lib/x86_64-linux-gnu/perl-base /usr/lib/x86_64-li5.40 /usr/local/lib/site_perl) at /usr/share/perl5/Debconf/FrontEnd/Readline.pm li
+debconf: falling back to frontend: Teletype
+Selecting previously unselected package net-tools.
+(Reading database ... 6699 files and directories currently installed.)
+Preparing to unpack .../net-tools_2.10-1.3_amd64.deb ...
+Unpacking net-tools (2.10-1.3) ...
+Setting up net-tools (2.10-1.3) ...
+root@9404c3c73326:/#
+root@9404c3c73326:/#
+root@9404c3c73326:/# netstat -lntp
+Active Internet connections (only servers)
+Proto Recv-Q Send-Q Local Address           Foreign Address         State       PI
+tcp        0      0 0.0.0.0:80              0.0.0.0:*               LISTEN      1/
+tcp6       0      0 :::80                   :::*                    LISTEN      1/
+root@9404c3c73326:/# exit
+exit
+ubuntu@ip-172-31-12-183:~$
+ubuntu@ip-172-31-12-183:~$
+ubuntu@ip-172-31-12-183:~$ docker exec -it test-docker2 netstat -lntp
+Active Internet connections (only servers)
+Proto Recv-Q Send-Q Local Address           Foreign Address         State       PI
+tcp        0      0 0.0.0.0:80              0.0.0.0:*               LISTEN      1/
+tcp6       0      0 :::80                   :::*                    LISTEN      1/
+ubuntu@ip-172-31-12-183:~$
+ubuntu@ip-172-31-12-183:~$
+ubuntu@ip-172-31-12-183:~$
+ubuntu@ip-172-31-12-183:~$ docker exec -it test-docker2 bash
+root@9404c3c73326:/# /etc/init.d/nginx status
+nginx is running.
+root@9404c3c73326:/# /etc/init.d/nginx stop
+ubuntu@ip-172-31-12-183:~$
+ubuntu@ip-172-31-12-183:~$
+ubuntu@ip-172-31-12-183:~$ docker ps
+CONTAINER ID   IMAGE     COMMAND                  CREATED          STATUS                  NAMES
+b7a036c15aff   nginx     "/docker-entrypoint.…"   24 minutes ago   Up 21 minutes  80/tcp   mydocker
+94407ff6259c   nginx     "/docker-entrypoint.…"   29 minutes ago   Up 21 minutes           mynginx
+ubuntu@ip-172-31-12-183:~$ docker ps -a
+CONTAINER ID   IMAGE         COMMAND                  CREATED          STATUS                                  NAMES
+9404c3c73326   nginx         "/docker-entrypoint.…"   16 minutes ago   Exited (0)                              test-docker2
+c593a35b0a7a   nginx         "/docker-entrypoint.…"   17 minutes ago   Exited (0)                              test-docker
+b7a036c15aff   nginx         "/docker-entrypoint.…"   24 minutes ago   Up 21 minut>80/tcp, [::]:8080->80/tcp   mydocker
+94407ff6259c   nginx         "/docker-entrypoint.…"   30 minutes ago   Up 21 minut                             mynginx
+42cdab229d46   hello-world   "/hello"                 36 minutes ago   Exited (0)                              ecstatic_blackwell
+1ae19b9964e9   hello-world   "/hello"                 37 minutes ago   Exited (0)                              kind_ishizaka
+ubuntu@ip-172-31-12-183:~$ docker exec -i my
+mydocker  mynginx
+ubuntu@ip-172-31-12-183:~$ docker exec -i my
+mydocker  mynginx
+ubuntu@ip-172-31-12-183:~$ docker exec -i mydocker
+docker: 'docker exec' requires at least 2 arguments
+
+Usage:  docker exec [OPTIONS] CONTAINER COMMAND [ARG...]
+
+See 'docker exec --help' for more information
+ubuntu@ip-172-31-12-183:~$ docker exec -i mydocker bash
+ll
+bash: line 1: ll: command not found
+ls
+bin
+boot
+dev
+docker-entrypoint.d
+docker-entrypoint.sh
+etc
+home
+lib
+lib64
+media
+mnt
+opt
+proc
+root
+run
+sbin
+srv
+sys
+tmp
+usr
+var
+
+
+^Cubuntu@ip-172-31-12-183:~$ docker exec -t mydocker bash
+root@b7a036c15aff:/# ls
+^Cubuntu@ip-172-31-12-183:~$ docker exec -it mydocker bash
+root@b7a036c15aff:/# ls
+bin   dev                  docker-entrypoint.sh  home  lib64  mnt  proc  run   srv
+boot  docker-entrypoint.d  etc                   lib   media  opt  root  sbin  sys
+root@b7a036c15aff:/# exit
+exit
+ubuntu@ip-172-31-12-183:~$
+ubuntu@ip-172-31-12-183:~$
+ubuntu@ip-172-31-12-183:~$ docker ps
+CONTAINER ID   IMAGE     COMMAND                  CREATED          STATUS                  NAMES
+b7a036c15aff   nginx     "/docker-entrypoint.…"   33 minutes ago   Up 30 minutes  80/tcp   mydocker
+94407ff6259c   nginx     "/docker-entrypoint.…"   38 minutes ago   Up 30 minutes           mynginx
+ubuntu@ip-172-31-12-183:~$
+ubuntu@ip-172-31-12-183:~$
+ubuntu@ip-172-31-12-183:~$ docker stop $(docker ls -aq)
+unknown shorthand flag: 'a' in -aq
+
+Usage:  docker [OPTIONS] COMMAND [ARG...]
+
+Run 'docker --help' for more information
+docker: 'docker stop' requires at least 1 argument
+
+Usage:  docker stop [OPTIONS] CONTAINER [CONTAINER...]
+
+See 'docker stop --help' for more information
+ubuntu@ip-172-31-12-183:~$ docker container stop $(docker container ls -aq)
+9404c3c73326
+c593a35b0a7a
+b7a036c15aff
+94407ff6259c
+42cdab229d46
+1ae19b9964e9
+ubuntu@ip-172-31-12-183:~$ docker container run -dt nginx sleep 500
+b7c7aee5488c65af50bb3da21a0f30980a3d240850eb4b12bde31f57770a7644
+ubuntu@ip-172-31-12-183:~$ docker ps
+CONTAINER ID   IMAGE     COMMAND                  CREATED          STATUS
+b7c7aee5488c   nginx     "/docker-entrypoint.…"   18 seconds ago   Up 17 seconds
+ubuntu@ip-172-31-12-183:~$ docker exec -it b7c7aee5488c
+docker: 'docker exec' requires at least 2 arguments
+
+Usage:  docker exec [OPTIONS] CONTAINER COMMAND [ARG...]
+
+See 'docker exec --help' for more information
+ubuntu@ip-172-31-12-183:~$ docker exec -it b7c7aee5488c bash
+root@b7c7aee5488c:/#
+root@b7c7aee5488c:/#
+root@b7c7aee5488c:/#
+root@b7c7aee5488c:/# apt update
+Get:1 http://deb.debian.org/debian trixie InRelease [140 kB]
+Get:2 http://deb.debian.org/debian trixie-updates InRelease [47.3 kB]
+Get:3 http://deb.debian.org/debian-security trixie-security InRelease [43.4 kB]
+Get:4 http://deb.debian.org/debian trixie/main amd64 Packages [9669 kB]
+Get:5 http://deb.debian.org/debian trixie-updates/main amd64 Packages [5412 B]
+Get:6 http://deb.debian.org/debian-security trixie-security/main amd64 Packages [7
+Fetched 9977 kB in 1s (7832 kB/s)
+All packages are up to date.
+root@b7c7aee5488c:/# apt install htop
+Installing:
+  htop
+
+Installing dependencies:
+  libgpm2  libncursesw6
+
+Suggested packages:
+  lm-sensors  lsof  strace  gpm
+
+Summary:
+  Upgrading: 0, Installing: 3, Removing: 0, Not Upgrading: 0
+  Download size: 321 kB
+  Space needed: 909 kB / 4222 MB available
+
+Continue? [Y/n] y
+Get:1 http://deb.debian.org/debian trixie/main amd64 libncursesw6 amd64 6.5+202502
+Get:2 http://deb.debian.org/debian trixie/main amd64 htop amd64 3.4.1-5 [171 kB]
+Get:3 http://deb.debian.org/debian trixie/main amd64 libgpm2 amd64 1.20.7-11+b2 [1
+Fetched 321 kB in 0s (11.7 MB/s)
+debconf: unable to initialize frontend: Dialog
+debconf: (No usable dialog-like program is installed, so the dialog based frontendl5/Debconf/FrontEnd/Dialog.pm line 79, <STDIN> line 3.)
+debconf: falling back to frontend: Readline
+debconf: unable to initialize frontend: Readline
+debconf: (Can't locate Term/ReadLine.pm in @INC (you may need to install the Term:ecked: /etc/perl /usr/local/lib/x86_64-linux-gnu/perl/5.40.1 /usr/local/share/perlperl5/5.40 /usr/share/perl5 /usr/lib/x86_64-linux-gnu/perl-base /usr/lib/x86_64-li5.40 /usr/local/lib/site_perl) at /usr/share/perl5/Debconf/FrontEnd/Readline.pm li
+debconf: falling back to frontend: Teletype
+Selecting previously unselected package libncursesw6:amd64.
+(Reading database ... 6699 files and directories currently installed.)
+Preparing to unpack .../libncursesw6_6.5+20250216-2_amd64.deb ...
+Unpacking libncursesw6:amd64 (6.5+20250216-2) ...
+Selecting previously unselected package htop.
+Preparing to unpack .../htop_3.4.1-5_amd64.deb ...
+Unpacking htop (3.4.1-5) ...
+Selecting previously unselected package libgpm2:amd64.
+Preparing to unpack .../libgpm2_1.20.7-11+b2_amd64.deb ...
+Unpacking libgpm2:amd64 (1.20.7-11+b2) ...
+Setting up libgpm2:amd64 (1.20.7-11+b2) ...
+Setting up libncursesw6:amd64 (6.5+20250216-2) ...
+Setting up htop (3.4.1-5) ...
+Processing triggers for libc-bin (2.41-12) ...
+root@b7c7aee5488c:/# htop
+root@b7c7aee5488c:/# !
+root@b7c7aee5488c:/#
+root@b7c7aee5488c:/#
+root@b7c7aee5488c:/#
+root@b7c7aee5488c:/# /etc/init.d/nginx status
+nginx is not running ... failed!
+root@b7c7aee5488c:/# exit
+exit
+ubuntu@ip-172-31-12-183:~$
+ubuntu@ip-172-31-12-183:~$
+ubuntu@ip-172-31-12-183:~$
+ubuntu@ip-172-31-12-183:~$ docker ps
+CONTAINER ID   IMAGE     COMMAND                  CREATED         STATUS         P
+b7c7aee5488c   nginx     "/docker-entrypoint.…"   6 minutes ago   Up 6 minutes   8
+ubuntu@ip-172-31-12-183:~$
+ubuntu@ip-172-31-12-183:~$
+ubuntu@ip-172-31-12-183:~$
+ubuntu@ip-172-31-12-183:~$ docker run -dt --name=docker2 nginx sleep 40
+45235259a1a4da8562e2e8047e4001e36f0c3a0cc9ef6b0a0b57779a35ab75dc
+ubuntu@ip-172-31-12-183:~$
+ubuntu@ip-172-31-12-183:~$
+ubuntu@ip-172-31-12-183:~$ docker ps
+CONTAINER ID   IMAGE     COMMAND                  CREATED         STATUS         P
+45235259a1a4   nginx     "/docker-entrypoint.…"   4 seconds ago   Up 3 seconds   8
+b7c7aee5488c   nginx     "/docker-entrypoint.…"   6 minutes ago   Up 6 minutes   8
+ubuntu@ip-172-31-12-183:~$ docker ps --watch
+unknown flag: --watch
+
+Usage:  docker ps [OPTIONS]
+
+Run 'docker ps --help' for more information
+ubuntu@ip-172-31-12-183:~$
+ubuntu@ip-172-31-12-183:~$
+ubuntu@ip-172-31-12-183:~$ docker ps
+CONTAINER ID   IMAGE     COMMAND                  CREATED          STATUS
+45235259a1a4   nginx     "/docker-entrypoint.…"   15 seconds ago   Up 14 seconds
+b7c7aee5488c   nginx     "/docker-entrypoint.…"   7 minutes ago    Up 7 minutes
+ubuntu@ip-172-31-12-183:~$ docker ps
+CONTAINER ID   IMAGE     COMMAND                  CREATED          STATUS
+45235259a1a4   nginx     "/docker-entrypoint.…"   21 seconds ago   Up 20 seconds
+b7c7aee5488c   nginx     "/docker-entrypoint.…"   7 minutes ago    Up 7 minutes
+ubuntu@ip-172-31-12-183:~$ docker ps
+CONTAINER ID   IMAGE     COMMAND                  CREATED          STATUS
+45235259a1a4   nginx     "/docker-entrypoint.…"   23 seconds ago   Up 22 seconds
+b7c7aee5488c   nginx     "/docker-entrypoint.…"   7 minutes ago    Up 7 minutes
+ubuntu@ip-172-31-12-183:~$ docker ps
+CONTAINER ID   IMAGE     COMMAND                  CREATED          STATUS
+45235259a1a4   nginx     "/docker-entrypoint.…"   27 seconds ago   Up 26 seconds
+b7c7aee5488c   nginx     "/docker-entrypoint.…"   7 minutes ago    Up 7 minutes
+ubuntu@ip-172-31-12-183:~$ docker ps
+CONTAINER ID   IMAGE     COMMAND                  CREATED          STATUS
+45235259a1a4   nginx     "/docker-entrypoint.…"   30 seconds ago   Up 29 seconds
+b7c7aee5488c   nginx     "/docker-entrypoint.…"   7 minutes ago    Up 7 minutes
+ubuntu@ip-172-31-12-183:~$ docker ps
+CONTAINER ID   IMAGE     COMMAND                  CREATED          STATUS
+45235259a1a4   nginx     "/docker-entrypoint.…"   34 seconds ago   Up 33 seconds
+b7c7aee5488c   nginx     "/docker-entrypoint.…"   7 minutes ago    Up 7 minutes
+ubuntu@ip-172-31-12-183:~$ docker ps
+CONTAINER ID   IMAGE     COMMAND                  CREATED          STATUS
+45235259a1a4   nginx     "/docker-entrypoint.…"   39 seconds ago   Up 38 seconds
+b7c7aee5488c   nginx     "/docker-entrypoint.…"   7 minutes ago    Up 7 minutes
+ubuntu@ip-172-31-12-183:~$ docker ps
+CONTAINER ID   IMAGE     COMMAND                  CREATED          STATUS
+45235259a1a4   nginx     "/docker-entrypoint.…"   40 seconds ago   Up 39 seconds
+b7c7aee5488c   nginx     "/docker-entrypoint.…"   7 minutes ago    Up 7 minutes
+ubuntu@ip-172-31-12-183:~$ docker ps
+CONTAINER ID   IMAGE     COMMAND                  CREATED         STATUS         P
+b7c7aee5488c   nginx     "/docker-entrypoint.…"   7 minutes ago   Up 7 minutes   8
+ubuntu@ip-172-31-12-183:~$
+ubuntu@ip-172-31-12-183:~$
+ubuntu@ip-172-31-12-183:~$
+ubuntu@ip-172-31-12-183:~$ docker container run -dt --re
+--read-only  (Mount the container's root filesystem as read only)
+--restart    (Restart policy to apply when a container exits)
+ubuntu@ip-172-31-12-183:~$ docker container run -dt --restart
+always          no              on-failure      unless-stopped
+ubuntu@ip-172-31-12-183:~$ docker container run -dt --restart unless-stopped
+docker: 'docker container run' requires at least 1 argument
+
+Usage:  docker container run [OPTIONS] IMAGE [COMMAND] [ARG...]
+
+See 'docker container run --help' for more information
+ubuntu@ip-172-31-12-183:~$ docker container run -dt nginx:latest --restart unless-
+5d5f02b00ec57d1f192284632f0fb51c4e0b3afcbe2a794f390187fc4eeb2f72
+ubuntu@ip-172-31-12-183:~$
+ubuntu@ip-172-31-12-183:~$
+ubuntu@ip-172-31-12-183:~$
+ubuntu@ip-172-31-12-183:~$ docker ps
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+ubuntu@ip-172-31-12-183:~$
+ubuntu@ip-172-31-12-183:~$ docker ps
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+ubuntu@ip-172-31-12-183:~$
+ubuntu@ip-172-31-12-183:~$
+ubuntu@ip-172-31-12-183:~$ docker ps -a
+CONTAINER ID   IMAGE          COMMAND                  CREATED              STATUS    NAMES
+5d5f02b00ec5   nginx:latest   "/docker-entrypoint.…"   About a minute ago   Exited    relaxed_black
+45235259a1a4   nginx          "/docker-entrypoint.…"   8 minutes ago        Exited    docker2
+b7c7aee5488c   nginx          "/docker-entrypoint.…"   15 minutes ago       Exited    practical_boyd
+9404c3c73326   nginx          "/docker-entrypoint.…"   43 minutes ago       Exited    test-docker2
+c593a35b0a7a   nginx          "/docker-entrypoint.…"   43 minutes ago       Exited    test-docker
+b7a036c15aff   nginx          "/docker-entrypoint.…"   51 minutes ago       Exited    mydocker
+94407ff6259c   nginx          "/docker-entrypoint.…"   56 minutes ago       Exited    mynginx
+42cdab229d46   hello-world    "/hello"                 About an hour ago    Exited    ecstatic_blackwell
+1ae19b9964e9   hello-world    "/hello"                 About an hour ago    Exited    kind_ishizaka
+ubuntu@ip-172-31-12-183:~$ sudo systemctl restart docker
+ubuntu@ip-172-31-12-183:~$ sudo systemctl status docker
+● docker.service - Docker Application Container Engine
+     Loaded: loaded (/usr/lib/systemd/system/docker.service; enabled; preset: enab
+     Active: active (running) since Sat 2025-11-15 00:48:25 UTC; 28s ago
+TriggeredBy: ● docker.socket
+       Docs: https://docs.docker.com
+   Main PID: 10911 (dockerd)
+      Tasks: 7
+     Memory: 39.4M (peak: 39.7M)
+        CPU: 366ms
+     CGroup: /system.slice/docker.service
+             └─10911 /usr/bin/dockerd -H fd:// --containerd=/run/containerd/contai
+
+Nov 15 00:48:25 ip-172-31-12-183 dockerd[10911]: time="2025-11-15T00:48:25.5429304
+Nov 15 00:48:25 ip-172-31-12-183 dockerd[10911]: time="2025-11-15T00:48:25.6107804
+Nov 15 00:48:25 ip-172-31-12-183 dockerd[10911]: time="2025-11-15T00:48:25.6177541
+Nov 15 00:48:25 ip-172-31-12-183 dockerd[10911]: time="2025-11-15T00:48:25.9517515
+Nov 15 00:48:25 ip-172-31-12-183 dockerd[10911]: time="2025-11-15T00:48:25.9689781
+Nov 15 00:48:25 ip-172-31-12-183 dockerd[10911]: time="2025-11-15T00:48:25.9691623
+Nov 15 00:48:25 ip-172-31-12-183 dockerd[10911]: time="2025-11-15T00:48:25.9822788
+Nov 15 00:48:25 ip-172-31-12-183 dockerd[10911]: time="2025-11-15T00:48:25.9889308
+Nov 15 00:48:25 ip-172-31-12-183 dockerd[10911]: time="2025-11-15T00:48:25.9891285
+Nov 15 00:48:25 ip-172-31-12-183 systemd[1]: Started docker.service - Docker Appli
+lines 1-22/22 (END)
+ubuntu@ip-172-31-12-183:~$ docker ps
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+ubuntu@ip-172-31-12-183:~$
+ubuntu@ip-172-31-12-183:~$
+ubuntu@ip-172-31-12-183:~$ docker ps -a
+CONTAINER ID   IMAGE          COMMAND                  CREATED             STATUS MES
+5d5f02b00ec5   nginx:latest   "/docker-entrypoint.…"   3 minutes ago       Exited laxed_black
+45235259a1a4   nginx          "/docker-entrypoint.…"   10 minutes ago      Exited cker2
+b7c7aee5488c   nginx          "/docker-entrypoint.…"   17 minutes ago      Exited actical_boyd
+9404c3c73326   nginx          "/docker-entrypoint.…"   45 minutes ago      Exited st-docker2
+c593a35b0a7a   nginx          "/docker-entrypoint.…"   46 minutes ago      Exited st-docker
+b7a036c15aff   nginx          "/docker-entrypoint.…"   53 minutes ago      Exited docker
+94407ff6259c   nginx          "/docker-entrypoint.…"   58 minutes ago      Exited nginx
+42cdab229d46   hello-world    "/hello"                 About an hour ago   Exited static_blackwell
+1ae19b9964e9   hello-world    "/hello"                 About an hour ago   Exited nd_ishizaka
+ubuntu@ip-172-31-12-183:~$ docker start relaxed_black
+relaxed_black
+ubuntu@ip-172-31-12-183:~$
+ubuntu@ip-172-31-12-183:~$
+ubuntu@ip-172-31-12-183:~$
+ubuntu@ip-172-31-12-183:~$ docker ps
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+ubuntu@ip-172-31-12-183:~$
+ubuntu@ip-172-31-12-183:~$
+ubuntu@ip-172-31-12-183:~$
+ubuntu@ip-172-31-12-183:~$ docker run -dt --re
+--read-only  (Mount the container's root filesystem as read only)
+--restart    (Restart policy to apply when a container exits)
+ubuntu@ip-172-31-12-183:~$ docker run -dt --re
+--read-only  (Mount the container's root filesystem as read only)
+--restart    (Restart policy to apply when a container exits)
+ubuntu@ip-172-31-12-183:~$ docker run -dt --re
+--read-only  (Mount the container's root filesystem as read only)
+--restart    (Restart policy to apply when a container exits)
+ubuntu@ip-172-31-12-183:~$ docker run -dt --restart
+always          no              on-failure      unless-stopped
+ubuntu@ip-172-31-12-183:~$ docker run -dt --restart unless-stopped nginx:latest
+aab899a164c0e119af45f930cc03c9162c9dc47c1a900a7077307955e0a9dcc3
+ubuntu@ip-172-31-12-183:~$ docker ps
+CONTAINER ID   IMAGE          COMMAND                  CREATED         STATUS
+aab899a164c0   nginx:latest   "/docker-entrypoint.…"   4 seconds ago   Up 3 second
+ubuntu@ip-172-31-12-183:~$
+ubuntu@ip-172-31-12-183:~$
+ubuntu@ip-172-31-12-183:~$
+ubuntu@ip-172-31-12-183:~$ systemctl stop docker
+==== AUTHENTICATING FOR org.freedesktop.systemd1.manage-units ====
+Authentication is required to stop 'docker.service'.
+Authenticating as: Ubuntu (ubuntu)
+Password:
+ubuntu@ip-172-31-12-183:~$ sudo systemctl stop docker
+Stopping 'docker.service', but its triggering units are still active:
+docker.socket
+ubuntu@ip-172-31-12-183:~$ docker ps
+CONTAINER ID   IMAGE          COMMAND                  CREATED          STATUS
+aab899a164c0   nginx:latest   "/docker-entrypoint.…"   46 seconds ago   Up Less thlgamal
+ubuntu@ip-172-31-12-183:~$ sudo systemctl start docker
+ubuntu@ip-172-31-12-183:~$ docker ps
+CONTAINER ID   IMAGE          COMMAND                  CREATED         STATUS
+aab899a164c0   nginx:latest   "/docker-entrypoint.…"   2 minutes ago   Up About a l
+ubuntu@ip-172-31-12-183:~$
+ubuntu@ip-172-31-12-183:~$ docker system df
+TYPE            TOTAL     ACTIVE    SIZE      RECLAIMABLE
+Images          2         2         272.3MB   272.3MB (100%)
+Containers      10        1         47.21MB   47.12MB (99%)
+Local Volumes   0         0         0B        0B
+Build Cache     0         0         0B        0B
+ubuntu@ip-172-31-12-183:~$ docker con
+config     (Manage Swarm configs)  container  (Manage containers)     context    (
+ubuntu@ip-172-31-12-183:~$ docker container run -dt -name busybox busybox sh
+unknown shorthand flag: 'n' in -name
+
+Usage:  docker container run [OPTIONS] IMAGE [COMMAND] [ARG...]
+
+Run 'docker container run --help' for more information
+ubuntu@ip-172-31-12-183:~$ docker container run -dt --name busybox busybox sh
+Unable to find image 'busybox:latest' locally
+latest: Pulling from library/busybox
+e59838ecfec5: Pull complete
+Digest: sha256:e3652a00a2fabd16ce889f0aa32c38eec347b997e73bd09e69c962ec7f8732ee
+Status: Downloaded newer image for busybox:latest
+4b24eb68fe231201db2c144f1985286d5191ad6f4feaf0a81e264c49dc2ee13c
+ubuntu@ip-172-31-12-183:~$
+ubuntu@ip-172-31-12-183:~$
+ubuntu@ip-172-31-12-183:~$
+ubuntu@ip-172-31-12-183:~$ docker ps
+CONTAINER ID   IMAGE          COMMAND                  CREATED         STATUS
+4b24eb68fe23   busybox        "sh"                     6 seconds ago   Up 5 second
+aab899a164c0   nginx:latest   "/docker-entrypoint.…"   5 minutes ago   Up 5 minute
+ubuntu@ip-172-31-12-183:~$ docker exec -it busybox
+docker: 'docker exec' requires at least 2 arguments
+
+Usage:  docker exec [OPTIONS] CONTAINER COMMAND [ARG...]
+
+See 'docker exec --help' for more information
+ubuntu@ip-172-31-12-183:~$ docker exec -it busybox bash
+OCI runtime exec failed: exec failed: unable to start container process: exec: "ba$PATH
+ubuntu@ip-172-31-12-183:~$ docker exec -it busybox sh
+/ #
+/ #
+/ #
+/ # dd if=/dev/zero of=/bigfile.txt bs=1M count=500
+500+0 records in
+500+0 records out
+524288000 bytes (500.0MB) copied, 6.831169 seconds, 73.2MB/s
+/ # ls
+bigfile.txt  dev          home         lib64        root         tmp          var
+bin          etc          lib          proc         sys          usr
+/ # exit
+ubuntu@ip-172-31-12-183:~$
+ubuntu@ip-172-31-12-183:~$
+ubuntu@ip-172-31-12-183:~$
+ubuntu@ip-172-31-12-183:~$ docker system df
+TYPE            TOTAL     ACTIVE    SIZE      RECLAIMABLE
+Images          3         3         803.5MB   803.5MB (100%)
+Containers      11        2         571.5MB   47.12MB (8%)
+Local Volumes   0         0         0B        0B
+Build Cache     0         0         0B        0B
+ubuntu@ip-172-31-12-183:~$ docker system df -v
+Images space usage:
+
+REPOSITORY    TAG       IMAGE ID       CREATED         SIZE      SHARED SIZE   UNI
+nginx         latest    1beed3ca46ac   10 days ago     225MB     0B            224
+hello-world   latest    f7931603f70e   3 months ago    20.3kB    0B            20.
+busybox       latest    e3652a00a2fa   13 months ago   6.78MB    0B            6.7
+
+Containers space usage:
+
+CONTAINER ID   IMAGE          COMMAND                  LOCAL VOLUMES   SIZE      C                NAMES
+4b24eb68fe23   busybox        "sh"                     0               524MB     2                busybox
+aab899a164c0   nginx:latest   "/docker-entrypoint.…"   0               81.9kB    8                vigilant_elgamal
+5d5f02b00ec5   nginx:latest   "/docker-entrypoint.…"   0               4.1kB     1minutes ago     relaxed_black
+45235259a1a4   nginx          "/docker-entrypoint.…"   0               4.1kB     2inutes ago      docker2
+b7c7aee5488c   nginx          "/docker-entrypoint.…"   0               23.6MB    2inutes ago      practical_boyd
+9404c3c73326   nginx          "/docker-entrypoint.…"   0               23.3MB    5inutes ago      test-docker2
+c593a35b0a7a   nginx          "/docker-entrypoint.…"   0               77.8kB    5inutes ago      test-docker
+b7a036c15aff   nginx          "/docker-entrypoint.…"   0               86kB      Ainutes ago      mydocker
+94407ff6259c   nginx          "/docker-entrypoint.…"   0               77.8kB    Ainutes ago      mynginx
+42cdab229d46   hello-world    "/hello"                 0               4.1kB     At an hour ago   ecstatic_blackwell
+1ae19b9964e9   hello-world    "/hello"                 0               4.1kB     At an hour ago   kind_ishizaka
+
+Local Volumes space usage:
+
+VOLUME NAME   LINKS     SIZE
+
+Build cache usage: 0B
+
+CACHE ID   CACHE TYPE   SIZE      CREATED   LAST USED   USAGE     SHARED
+ubuntu@ip-172-31-12-183:~$ docker container run -dt --name busy busybox ping -c10 google.com
+a4d41b2468b4c8588a9927fab053b0aa07e8d7787fbeede35c22f0d15a9a3fcd
+ubuntu@ip-172-31-12-183:~$
+ubuntu@ip-172-31-12-183:~$
+ubuntu@ip-172-31-12-183:~$
+ubuntu@ip-172-31-12-183:~$ docker logs a4d41b2468b4c8588a9927fab053b0aa07e8d7787fbeede35c22f0d15a9a3fcd
+PING google.com (172.217.167.78): 56 data bytes
+64 bytes from 172.217.167.78: seq=0 ttl=118 time=1.516 ms
+64 bytes from 172.217.167.78: seq=1 ttl=118 time=1.154 ms
+64 bytes from 172.217.167.78: seq=2 ttl=118 time=1.174 ms
+64 bytes from 172.217.167.78: seq=3 ttl=118 time=1.240 ms
+64 bytes from 172.217.167.78: seq=4 ttl=118 time=1.188 ms
+64 bytes from 172.217.167.78: seq=5 ttl=118 time=1.177 ms
+64 bytes from 172.217.167.78: seq=6 ttl=118 time=1.135 ms
+64 bytes from 172.217.167.78: seq=7 ttl=118 time=1.189 ms
+64 bytes from 172.217.167.78: seq=8 ttl=118 time=1.201 ms
+64 bytes from 172.217.167.78: seq=9 ttl=118 time=1.186 ms
+
+--- google.com ping statistics ---
+10 packets transmitted, 10 packets received, 0% packet loss
+round-trip min/avg/max = 1.135/1.216/1.516 ms
+ubuntu@ip-172-31-12-183:~$
+ubuntu@ip-172-31-12-183:~$
+ubuntu@ip-172-31-12-183:~$
+ubuntu@ip-172-31-12-183:~$
+ubuntu@ip-172-31-12-183:~$
+ubuntu@ip-172-31-12-183:~$ docker ps -a
+CONTAINER ID   IMAGE          COMMAND                  CREATED             STATUS                         PORTS     NAMES
+a4d41b2468b4   busybox        "ping -c10 google.com"   35 seconds ago      Exited (0) 25 seconds ago                busy
+4b24eb68fe23   busybox        "sh"                     5 minutes ago       Up 5 minutes                             busybox
+aab899a164c0   nginx:latest   "/docker-entrypoint.…"   11 minutes ago      Up 10 minutes                  80/tcp    vigilant_elgamal
+5d5f02b00ec5   nginx:latest   "/docker-entrypoint.…"   16 minutes ago      Exited (127) 12 minutes ago              relaxed_black
+45235259a1a4   nginx          "/docker-entrypoint.…"   23 minutes ago      Exited (0) 23 minutes ago                docker2
+b7c7aee5488c   nginx          "/docker-entrypoint.…"   30 minutes ago      Exited (0) 22 minutes ago                practical_boyd
+9404c3c73326   nginx          "/docker-entrypoint.…"   58 minutes ago      Exited (0) 42 minutes ago                test-docker2
+c593a35b0a7a   nginx          "/docker-entrypoint.…"   59 minutes ago      Exited (0) 59 minutes ago                test-docker
+b7a036c15aff   nginx          "/docker-entrypoint.…"   About an hour ago   Exited (0) 31 minutes ago                mydocker
+94407ff6259c   nginx          "/docker-entrypoint.…"   About an hour ago   Exited (0) 31 minutes ago                mynginx
+42cdab229d46   hello-world    "/hello"                 About an hour ago   Exited (0) About an hour ago             ecstatic_blackwell
+1ae19b9964e9   hello-world    "/hello"                 About an hour ago   Exited (0) About an hour ago             kind_ishizaka
+ubuntu@ip-172-31-12-183:~$ docker container run --rm -dt --name busy busybox ping -c20 google.com
+docker: Error response from daemon: Conflict. The container name "/busy" is already in use by container "a4d41b2468b4c8588a9927fab053b0aa07e8d7787fbeede35c22f0d15a9a3fcd". You have to remove (or rename) that container to be able to reuse that name.
+
+Run 'docker run --help' for more information
+ubuntu@ip-172-31-12-183:~$ docker container run --rm -dt --name busy1 busybox ping -c20 google.com
+ee5964c05f2d107bb6bc437225c0505a5d0bbdd578ca00716fab4a360efd7d7e
+ubuntu@ip-172-31-12-183:~$ docker logs ee5964c05f2d107bb6bc437225c0505a5d0bbdd578ca00716fab4a360efd7d7eee5964c05f2d107bb6bc437225c0505a5d0bbdd578ca00716fab4a360efd7d7e
+Error response from daemon: No such container: ee5964c05f2d107bb6bc437225c0505a5d0bbdd578ca00716fab4a360efd7d7eee5964c05f2d107bb6bc437225c0505a5d0bbdd578ca00716fab4a360efd7d7e
+ubuntu@ip-172-31-12-183:~$
+ubuntu@ip-172-31-12-183:~$
+ubuntu@ip-172-31-12-183:~$ docker logs ee5964c05f2d107bb6bc437225c0505a5d0bbdd578ca00716fab4a360efd7d7e
+Error response from daemon: No such container: ee5964c05f2d107bb6bc437225c0505a5d0bbdd578ca00716fab4a360efd7d7e
+ubuntu@ip-172-31-12-183:~$ docker logs ee5964c05f2d107bb6bc437225c0505a5d0bbdd578ca00716fab4a360efd7d7edocker logs ee5964c05f2d107bb6bc437225c0505a5d0bbdd578ca00716fab4a360efd7d7e
+docker: 'docker logs' requires 1 argument
+
+Usage:  docker logs [OPTIONS] CONTAINER
+
+Run 'docker logs --help' for more information
+ubuntu@ip-172-31-12-183:~$
+ubuntu@ip-172-31-12-183:~$
+ubuntu@ip-172-31-12-183:~$
+ubuntu@ip-172-31-12-183:~$ docker logs busy1
+Error response from daemon: No such container: busy1
+ubuntu@ip-172-31-12-183:~$
